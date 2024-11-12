@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+<link rel="stylesheet" type="text/css" th:href="@{/style.css}">
+<meta charset="UTF-8">
+<title>Formulario login</title>
+</head>
+<body>
+	<h3><span class="text-danger" th:text="${mensaje}"></span></h3>
+	<form th:action="@{/extraer}" method="post" class="border border-dark-subtle rounded bg-light form">
+		<fieldset>
+			<legend>Introduzca cantidad: </legend>
+				<div class="mb-3">
+					<input type="number" name="extraer" placeholder="Retirar dinero" required class="form-control input">
+				</div>
+			<input type="submit" value="Enviar" class="btn btn-primary enviar">
+		</fieldset>
+	</form>
+	<a th:href="@{/login}"><button class="btn btn-secondary detalle">Volver</button></a>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+</body>
+</html>
