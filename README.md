@@ -15,6 +15,7 @@ modelo.entidades: Contiene las clases de entidad que representan las tablas de l
 modelo.dao: Define las interfaces y las implementaciones DAO para manejar la persistencia de datos.
 modelo.repository: Extiende JpaRepository para facilitar el acceso a datos con métodos personalizados.
 controlador: Contiene los controladores que manejan las solicitudes HTTP y coordinan la lógica de negocio.
+
 Clases principales
 1. Entidad Cuenta
 Representa una cuenta bancaria. Incluye atributos como idCuenta, saldo y tipoCuenta. La clase utiliza Lombok para generar métodos automáticamente y JPA para el mapeo a la base de datos.
