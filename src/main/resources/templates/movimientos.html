@@ -8,7 +8,7 @@
 </head>
 <body>
 	<nav class="nav">
-		<a th:href="@{/login}"><button class="btn btn-secondary detalle">Volver</button></a>
+		<a th:href="@{/}"><button class="btn btn-secondary detalle">Volver</button></a>
 	</nav>
 	<h3 class="p-3 bg-info bg-opacity-10 border border-info border-start rounded textos">Numero cuenta: <span class="text-primary" th:text="${session.cuenta.idCuenta}"></span></h3>
 	<h3 class="p-3 bg-info bg-opacity-10 border border-info border-start rounded textos">Saldo: <span  class="text-primary" th:text="${session.cuenta.saldo}"></span></h3>

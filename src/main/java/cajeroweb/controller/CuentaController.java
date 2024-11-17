@@ -37,6 +37,23 @@ public class CuentaController {
     private MovimientoDao mdao; // Inyección del DAO de Movimiento para gestionar los datos de los movimientos
 
     /**
+     * Maneja las solicitudes GET para la página de inicio.
+     * Soporta varias rutas: `""`, `"/"`, y `"/home"`.
+     * Verifica si hay una sesión activa con una cuenta logueada.
+     *
+     * @param sesion la sesión HTTP actual
+     * @return el nombre de la vista "home" si la cuenta está en sesión,
+     *         o "FormLogin" si no hay una cuenta activa
+     */
+    @GetMapping({(""),("/"),("/home")})
+    public String home(HttpSession sesion) {
+    	if (sesion.getAttribute("cuenta") != null) {
+            return "home";
+        }
+    	return "FormLogin"; 
+    }
+    
+    /**
      * Maneja la solicitud GET para la página de inicio de sesión.
      * Si la sesión ya contiene una cuenta activa, redirige al usuario a la página principal (home).
      *
@@ -44,10 +61,8 @@ public class CuentaController {
      * @return el nombre de la vista a renderizar (home o FormLogin)
      */
     @GetMapping("/login")
-    public String inicio(HttpSession sesion) {
-        if (sesion.getAttribute("cuenta") != null) {
-            return "home";
-        }
+    public String inicio() {
+        
         return "FormLogin";
     }
 
@@ -121,7 +136,7 @@ public class CuentaController {
         cdao.ingreso(cuenta, ingreso);
         ratt.addFlashAttribute("mensaje", "Ingreso realizado con éxito");
 
-        return "redirect:/login";
+        return "redirect:/";
     }
 
     /**
@@ -158,7 +173,7 @@ public class CuentaController {
             ratt.addFlashAttribute("mensaje", "Extracción realizada con éxito");
             Movimiento movimiento = new Movimiento(0, cuenta, new Date(), extraer, "Extracción");
             mdao.insertUno(movimiento);
-            return "redirect:/login";
+            return "redirect:/";
         } else {
             ratt.addFlashAttribute("mensaje", "Operación incorrecta: saldo insuficiente");
             return "redirect:/extraer";

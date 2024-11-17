@@ -24,14 +24,6 @@ public interface CuentaDao {
     Cuenta buscarUno(int clavePk);
 
     /**
-     * Inserta una nueva cuenta en la base de datos.
-     *
-     * @param entidad la entidad Cuenta a insertar
-     * @return la entidad Cuenta guardada si la operación es exitosa
-     */
-    Cuenta insertUno(Cuenta entidad);
-
-    /**
      * Actualiza una cuenta existente en la base de datos.
      *
      * @param entidad la entidad Cuenta a actualizar

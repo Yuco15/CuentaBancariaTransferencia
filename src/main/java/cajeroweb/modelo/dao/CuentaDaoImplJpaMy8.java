@@ -34,23 +34,6 @@ public class CuentaDaoImplJpaMy8 implements CuentaDao {
     }
 
     /**
-     * Inserta una nueva cuenta en la base de datos.
-     * Utiliza el repositorio para guardar la entidad.
-     *
-     * @param entidad la entidad Cuenta a insertar
-     * @return la entidad guardada si la operación es exitosa, o null si ocurre un error
-     */
-    @Override
-    public Cuenta insertUno(Cuenta entidad) {
-        try {
-            return crepo.save(entidad);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-    /**
      * Actualiza una cuenta existente en la base de datos.
      * Comprueba si la cuenta existe antes de actualizar.
      *
