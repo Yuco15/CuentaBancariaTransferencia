@@ -11,7 +11,7 @@ import cajeroweb.modelo.repository.MovimientoRepository;
 /**
  * Implementación del DAO para la entidad Movimiento utilizando Spring Data JPA.
  * Esta clase interactúa con la base de datos a través del repositorio MovimientoRepository,
- * proporcionando métodos para insertar movimientos y obtener el historial de movimientos de una cuenta.
+ * proporcionando métodos para insertar movimientos y obtener el historial de movimientos de una cuenta
  *
  * @author Andres
  * @version 1.0
