@@ -39,7 +39,7 @@ public interface CuentaDao {
      * @param saldo la cantidad de dinero a ingresar
      * @return 1 si el ingreso es exitoso, 0 si ocurre un error
      */
-    int ingreso(Cuenta cuenta, int saldo);
+    int ingreso(Cuenta cuenta, double saldo);
 
     /**
      * Realiza una extracción de dinero de la cuenta especificada.
@@ -49,5 +49,18 @@ public interface CuentaDao {
      * @param saldo la cantidad de dinero a extraer
      * @return 1 si la extracción es exitosa, 0 si el saldo es insuficiente o si ocurre un error
      */
-    int extraer(Cuenta cuenta, int saldo);
+    int extraer(Cuenta cuenta, double saldo);
+    
+    /**
+     * Realiza una transferencia de fondos entre dos cuentas bancarias.
+     * Verifica si la cuenta origen tiene saldo suficiente antes de proceder.
+     * Si la transferencia es exitosa, actualiza los saldos de ambas cuentas.
+     *
+     * @param cuentaOrigen la cuenta desde la cual se extraerán los fondos
+     * @param cuentaDestino la cuenta a la cual se ingresarán los fondos
+     * @param cantidad la cantidad de dinero a transferir
+     * @return 1 si la transferencia es exitosa, 0 si falla debido a saldo insuficiente
+     */
+    int transferencia(Cuenta cuentaOrigen, Cuenta cuentaDestino, double cantidad); 
+    
 }

@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>cajeroweb</groupId>
-	<artifactId>MMA_Actividad2_cajero</artifactId>
+	<artifactId>MMA_Actividad3_cajero</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>TED_Actividad2</name>
 	<description>Actividad 2 cajero virtual data jpa</description>

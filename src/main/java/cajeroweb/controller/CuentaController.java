@@ -122,7 +122,7 @@ public class CuentaController {
      * @return redirección a la página principal si el ingreso es exitoso, o al formulario si hay errores
      */
     @PostMapping("/ingresar")
-    public String procIngreso(@RequestParam int ingreso, RedirectAttributes ratt, HttpSession sesion) {
+    public String procIngreso(@RequestParam double ingreso, RedirectAttributes ratt, HttpSession sesion) {
         Cuenta cuenta = (Cuenta) sesion.getAttribute("cuenta");
         
         //Verificamos si la cuenta existe y si el valor a extraer es positivo
@@ -159,7 +159,7 @@ public class CuentaController {
      * @return redirección a la página principal si la extracción es exitosa, o al formulario si hay errores
      */
     @PostMapping("/extraer")
-    public String procExtraer(@RequestParam int extraer, RedirectAttributes ratt, HttpSession sesion) {
+    public String procExtraer(@RequestParam double extraer, RedirectAttributes ratt, HttpSession sesion) {
         Cuenta cuenta = (Cuenta) sesion.getAttribute("cuenta");
 
         // Verificamos si la cuenta existe y si el valor a extraer es positivo
@@ -171,7 +171,7 @@ public class CuentaController {
         // Comprobamos si el saldo es suficiente para realizar la extracción
         if (cdao.extraer(cuenta, extraer) == 1) {
             ratt.addFlashAttribute("mensaje", "Extracción realizada con éxito");
-            Movimiento movimiento = new Movimiento(0, cuenta, new Date(), extraer, "Extracción");
+            Movimiento movimiento = new Movimiento(0, cuenta, new Date(), -extraer, "Extracción");
             mdao.insertUno(movimiento);
             return "redirect:/";
         } else {
@@ -193,5 +193,62 @@ public class CuentaController {
         model.addAttribute("movimientos", mdao.movimientos(((Cuenta) sesion.getAttribute("cuenta")).getIdCuenta()));
         return "movimientos";
     }
+    
+    /**
+     * Maneja la solicitud GET para mostrar el formulario de transferencia.
+     * Presenta al usuario una vista donde puede ingresar los detalles de la transferencia,
+     * como la cuenta de destino y la cantidad a transferir.
+     *
+     * @return el nombre de la vista "transferencia" para renderizar el formulario de transferencia
+     */
+    @GetMapping("/transferencia")
+    public String transferencia() {
+        return "transferencia";
+    }
+    
+    /**
+     * Maneja la solicitud POST para realizar una transferencia de fondos entre dos cuentas.
+     * Verifica la validez de la cuenta origen, la cuenta destino y la cantidad a transferir
+     * antes de realizar la operación. Registra los movimientos de transferencia para ambas cuentas.
+     *
+     * @param cantidad la cantidad de dinero a transferir
+     * @param idCuentaDestino el identificador de la cuenta de destino
+     * @param ratt atributos para redirección con mensajes flash
+     * @param sesion la sesión HTTP actual
+     * @return redirección a la página de transferencia en caso de error, o a la página principal si la operación es exitosa
+     */
+    @PostMapping("/transferencia")
+    public String procTransferencia(@RequestParam double cantidad, @RequestParam int idCuentaDestino, RedirectAttributes ratt, HttpSession sesion) {
+    	final String redirectTransferencia =  "redirect:/transferencia"; 
+    	
+    	Cuenta cuentaDestino = cdao.buscarUno(idCuentaDestino);
+    	Cuenta cuentaOrigen = (Cuenta) sesion.getAttribute("cuenta");
+    	
+    	// Validar cuenta origen en la sesión, cuenta de destino, y si cuenta de destino es igual a la de origen
+    	if(cuentaOrigen == null || cuentaDestino == null || cuentaOrigen.getIdCuenta() == idCuentaDestino) {
+    		ratt.addFlashAttribute("mensaje", "Operación incorrecta: Cuenta incorrecta");
+    		return redirectTransferencia; 
+    	}
+    	// Validar cantidad a transferir
+    	if(cantidad <= 0) {
+    		ratt.addFlashAttribute("mensaje", "Operación incorrecta: Cantidad incorrecta");
+    		return redirectTransferencia; 
+    	}
+    	
+    	// Realizar la transferencia y validar saldo suficiente
+    	if(cdao.transferencia(cuentaOrigen, cuentaDestino, cantidad)!= 1) {
+    		ratt.addFlashAttribute("mensaje", "Operación incorrecta: Saldo insuficiente");
+    		return redirectTransferencia; 
+    	}
+    	// Registrar movimientos para cuenta origen y destino
+    	Movimiento movimientoOrigen = new Movimiento(0, cuentaOrigen, new Date(), -cantidad, "Transferencia");
+		Movimiento movimientoDestino = new Movimiento(0, cuentaDestino, new Date(), cantidad, "Transferencia");
+		mdao.insertUno(movimientoDestino);
+		mdao.insertUno(movimientoOrigen);
+		// Mensaje de éxito y redirección a la página principal
+		ratt.addFlashAttribute("mensaje", "Transferencia realizada con éxito");
+		return "redirect:/";
+    }
+    
 }
 

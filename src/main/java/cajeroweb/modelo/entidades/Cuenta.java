@@ -29,11 +29,11 @@ public class Cuenta implements Serializable{
 	@Column(name="tipo_cuenta")
 	private String tipoCuenta;
 	
-	public void ingresar(int saldo) {
+	public void ingresar(double saldo) {
 		this.saldo += saldo; 
 	}
 	
-	public boolean extraer(int saldo) {
+	public boolean extraer(double saldo) {
 		if (saldo <= this.saldo ) {
 			this.saldo -= saldo; 
 			return true; 

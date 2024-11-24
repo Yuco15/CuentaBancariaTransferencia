@@ -62,7 +62,7 @@ public class CuentaDaoImplJpaMy8 implements CuentaDao {
      * @return 1 si la operación es exitosa, 0 si ocurre un error
      */
     @Override
-    public int ingreso(Cuenta cuenta, int saldo) {
+    public int ingreso(Cuenta cuenta, double saldo) {
         cuenta.ingresar(saldo);
         return updateUno(cuenta);
     }
@@ -76,11 +76,33 @@ public class CuentaDaoImplJpaMy8 implements CuentaDao {
      * @return 1 si la operación es exitosa, 0 si el saldo es insuficiente o ocurre un error
      */
     @Override
-    public int extraer(Cuenta cuenta, int saldo) {
+    public int extraer(Cuenta cuenta, double saldo) {
         if (cuenta.extraer(saldo)) {
             return updateUno(cuenta);
         } else {
             return 0;
         }
     }
+    
+    /**
+     * Realiza una transferencia de fondos entre dos cuentas.
+     * Verifica si la cuenta origen tiene saldo suficiente para realizar la transferencia
+     * antes de actualizar los saldos de ambas cuentas.
+     *
+     * @param cuentaOrigen la cuenta desde la cual se extraerán los fondos
+     * @param cuentaDestino la cuenta a la cual se ingresarán los fondos
+     * @param cantidad la cantidad de dinero a transferir
+     * @return 1 si la transferencia es exitosa, 0 si el saldo es insuficiente
+     */
+	@Override
+	public int transferencia(Cuenta cuentaOrigen, Cuenta cuentaDestino, double cantidad) {
+		// Verifica si hay saldo suficiente en la cuenta origen para la extracción y actualiza el saldo 
+		if(extraer(cuentaOrigen, cantidad)==1) {
+			// Ingresa la cantidad transferida en la cuenta destino
+			ingreso(cuentaDestino, cantidad); 
+			return 1; 
+		}else {
+			return 0; 
+		}
+	}
 }
